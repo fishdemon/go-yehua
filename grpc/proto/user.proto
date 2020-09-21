@@ -1,0 +1,34 @@
+syntax = "proto3";
+package proto;
+
+service UserService {
+  // 增加一个新的 user
+  rpc AddUser (User) returns (CommonResponse) {}
+  // 查询 user
+  rpc GetUsers(UserFilter) returns (stream User) {}
+}
+
+message User {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  string phone= 4;
+
+  message Parent {
+    string name = 2;
+    string email = 3;
+    string phone= 4;
+    string relation = 5;
+  }
+
+  repeated Parent parents = 5;
+}
+
+message CommonResponse {
+  int32 code = 1;
+  string msg = 2;
+}
+
+message UserFilter {
+  int32 id = 1;
+}
