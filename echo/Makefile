@@ -6,7 +6,7 @@ GO_BUILD=${GO_FLAG} go build
 GO_CLEAN=go clean
 GO_TEST=go test
 
-all: begin build end
+all: begin build end docker-build docker-push
 
 begin:
 	@ echo starting compile
@@ -14,3 +14,7 @@ build:
 	${GO_BUILD} -o ${BINARY_NAME} main.go
 end:
 	@ echo complete compile...
+docker-build:
+	docker build -t ccr.ccs.tencentyun.com/fishdemon1/echo-demo .
+docker-push:
+	docker push ccr.ccs.tencentyun.com/fishdemon1/echo-demo

@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/user"
 )
 
-func main() {
+// 用户目录相关
+func getUserHome()  {
 	// 获取用户目录
 	var userHome string
 	user, err := user.Current()
@@ -20,15 +22,19 @@ func main() {
 				fmt.Print(item + " ")
 			}
 		}
-		fmt.Println()
+		fmt.Println(userHome)
 	}
+
 	// 获取用户目录
 	fmt.Println(os.UserHomeDir())
 	fmt.Println(os.UserCacheDir())
 	fmt.Println(os.UserConfigDir())
 	// 临时目录
 	fmt.Println(os.TempDir())
+}
 
+// 目录操作
+func dirOperation()  {
 	// 创建目录，并设置权限为 777
 	//err1 := os.Mkdir(userHome + "/demo", os.ModePerm)
 	//if err1 != nil {
@@ -56,7 +62,10 @@ func main() {
 	//if err4 != nil {
 	//	log.Fatal(err4)
 	//}
+}
 
+// 文件操作
+func fileOperation()  {
 	// 创建一个新文件, 权限默认为 0666
 	//file1, err5 := os.Create(userHome + "/demo/info.txt")
 	//defer file1.Close()
@@ -75,6 +84,7 @@ func main() {
 	//fmt.Println(fileName)
 
 	// 以指定方式打开文件，只读，只写，读写，后面还要加权限
+	userHome,_ := os.UserHomeDir()
 	file3, err7 := os.OpenFile(userHome + "/demo/info.txt", os.O_RDWR, 0666)
 	defer file3.Close()
 	if err7 != nil {
@@ -110,8 +120,23 @@ func main() {
 
 	// 删除文件
 	os.Remove(userHome + "/demo/info.txt")
+}
 
+// 获取指定目录下所有的文件
+func getSubFiles()  {
+	userHome,_ := os.UserHomeDir()
+	fileInfos, _ := ioutil.ReadDir(userHome)
+	for _, fileInfo := range fileInfos {
+		if fileInfo.IsDir() {
+			fmt.Println("目录：" + fileInfo.Name())
+			continue
+		}
+		fmt.Println("文件：" + fileInfo.Name())
+	}
+}
 
+func main() {
+	//getSubFiles()
 }
 
 

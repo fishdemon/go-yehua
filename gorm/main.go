@@ -19,6 +19,7 @@ type User struct {
 	Password string
 }
 
+// 测试 curd
 func testCRUD(db *gorm.DB)  {
 	user := User{"12346", "john", 23, "M", "john","123456"}
 	res := db.Create(&user)
@@ -45,6 +46,7 @@ func testCRUD(db *gorm.DB)  {
 	db.Delete(&user1)
 }
 
+// 初始化数据库
 func initDB() (*gorm.DB, error) {
 	db, err := gorm.Open("mysql", "root:123456@/go-study?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {

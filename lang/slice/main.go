@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func main() {
+func slice1()  {
 	arr := [3]int{1,2,3}
 
 	// 创建切片
@@ -34,5 +34,15 @@ func main() {
 	fmt.Println(s[1:8:9])		// [2 3 4 5 6 7 8]
 	fmt.Println(cap(s[1:8:9]))	// 8
 	fmt.Println(s[1:10:20])     // 会报错,c 不可以超过当前数组的长度
+}
 
+func main() {
+	s1 := make([]int, 10)
+	fmt.Println(len(s1))
+	fmt.Println(cap(s1))
+
+	s2 := []int{}
+	fmt.Println(len(s2))
+	s2 = append(s2, 0)
+	fmt.Println(len(s2))
 }

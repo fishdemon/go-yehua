@@ -17,6 +17,5 @@ func main() {
 	if err != nil {
 		log.Fatal("http: ", err.Error())
 	}
-
 }
 

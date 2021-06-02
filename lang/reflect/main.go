@@ -45,7 +45,7 @@ func (p *Person) Walk()  {
 
 type HandlerFunc func() error
 
-func main() {
+func reflectInterface()  {
 	var p *test.Person = new(test.Person)
 	pt := reflect.TypeOf(p)
 	fmt.Println(pt.PkgPath())
@@ -61,7 +61,9 @@ func main() {
 	// Value
 	fmt.Println("value: ", reflect.ValueOf(personI))
 
+}
 
+func reflectStruct()  {
 	// 操作struct
 	p1 := Person{
 		Name:    "allen",
@@ -71,21 +73,39 @@ func main() {
 		It:       nil,
 	}
 	// 反射定律1：将接口类型变量转换为反射类型对象（Type/Value）
-	t = reflect.TypeOf(p1)
-	fmt.Println(t.NumField())
-	fmt.Println(t.NumMethod())
-	fmt.Println(t.PkgPath())
+	t := reflect.TypeOf(p1)
+	fmt.Println("num field: ", t.NumField())
+	fmt.Println("num method: ", t.NumMethod())
+	fmt.Println("pkg path: ", t.PkgPath())
+	fmt.Println("kind: ", t.Kind())
+	fmt.Println("name:", t.Name())
 	//fmt.Println(t.NumIn())
 	//fmt.Println(t.NumOut())
 	//fmt.Println(t.In(2))
 	//fmt.Println(t.Out(1))
+
+	// 循环遍历属性
+
+
 
 	// 操作属性/标签
 	f, _ := t.FieldByName("Name")
 	fmt.Println(fmt.Sprintf("index:%d name:%s type:%s tag:%s pkg:%s", f.Index, f.Name, f.Type, f.Tag, f.PkgPath))
 
 	v := reflect.ValueOf(&p1)
-	v.Index(0).SetString("Jack")
-	fmt.Println(p1)
+	for i:=0; i<v.NumField();i++ {
+		vav.Index(i)
+	}
+	//v.Index(0).SetString("Jack")
+	//fmt.Println(p1)
+}
+
+func main() {
+	reflectStruct()
+	i := 10
+	fmt.Println(reflect.TypeOf(i))
+	fmt.Println(reflect.TypeOf(i).Name())
+	fmt.Println(reflect.TypeOf(i).Kind())
+	fmt.Println(reflect.ValueOf(i))
 
 }

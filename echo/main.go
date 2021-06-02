@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 )
 
 type User struct {
@@ -148,6 +149,27 @@ func upload(c echo.Context) error {
 	return c.String(http.StatusOK, fmt.Sprintf("文件上传成功: %s", file.Filename))
 }
 
+func tpsIOTest(c echo.Context) error {
+	ts := c.Param("time")
+	t,_ := strconv.Atoi(ts)
+	time.Sleep(time.Duration(int64(t)) * time.Millisecond)
+	return c.String(http.StatusOK, "hello tps")
+}
+
+func tpsCpuTest(c echo.Context) error {
+	value := c.Param("value")
+	v,_ := strconv.Atoi(value)
+	start := time.Now().UnixNano() / 1e6
+	sum := 0
+	for sum < v {
+		sum += 2
+		sum -= 1
+	}
+	inteval := time.Now().UnixNano() / 1e6 - start
+	fmt.Printf("sum: %v, 花费时间: %v\n", sum, inteval)
+	return c.String(http.StatusOK, "hello tps")
+}
+
 func main() {
 	fmt.Println("Starting Server")
 
@@ -167,8 +189,10 @@ func main() {
 	e.GET("/users", FindUser)
 	e.GET("/request", request)
 	e.POST("/file", upload)
+	e.GET("/tps/io/:time", tpsIOTest)
+	e.GET("/tps/cpu/:value", tpsCpuTest)
 
 	//启动http server, 并监听8080端口，冒号（:）前面为空的意思就是绑定网卡所有Ip地址，本机支持的所有ip地址都可以访问。
-	e.Start(":8080")
+	e.Start(":10006")
 }
 
